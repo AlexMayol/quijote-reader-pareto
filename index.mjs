@@ -15,22 +15,28 @@ fullText = sanitizeText(fullText);
 
 fullText = fullText.split(" ");
 
-let obj = {};
+let dictionary = {};
 
 for (let x = 0; x < fullText.length; x++) {
-  if (obj[fullText[x]]) {
-    obj[fullText[x]].count++;
-  } else obj[fullText[x]] = { count: 1 };
+  if (dictionary[fullText[x]]) {
+    dictionary[fullText[x]].count++;
+  } else dictionary[fullText[x]] = { count: 1 };
 }
 
 //sorting
-let result = Object.entries(obj).sort((a, b) => b[1].count - a[1].count);
-const dictionaryLength = result.length;
+let sortedDictionary = Object.entries(dictionary).sort(
+  (a, b) => b[1].count - a[1].count
+);
+const dictionaryLength = sortedDictionary.length;
+let mustLearnWords = sortedDictionary.splice(
+  0,
+  Math.round(dictionaryLength * 0.2)
+);
+mustLearnWords = mustLearnWords.map((word) => ({
+  word: word[0],
+  count: word[1].count,
+}));
 
-let mustLearnWords = result.splice(0, Math.round(dictionaryLength * 0.2));
-mustLearnWords = mustLearnWords.map((word) => {
-  return { word: word[0], count: word[1].count };
-});
 console.log(
   "🚀 ~ file: index.mjs ~ line 34 ~ mustLearnWords=mustLearnWords.map ~ mustLearnWords",
   mustLearnWords
